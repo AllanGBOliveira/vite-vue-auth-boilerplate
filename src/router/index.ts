@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '@/components/LoginView.vue';
+import RegisterView from '@/components/RegisterView.vue';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/'),
   routes: [
     {
       path: '/',
@@ -17,7 +19,26 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
+    },
   ],
+});
+
+
+router.beforeEach(async (to, from) => {
+  const isAuthenticated = false;
+  if (!isAuthenticated && to.name !== 'login' && to.name !== 'register') {
+    // redirect the user to the login page
+    return { name: 'login' }
+  }
 })
 
 export default router

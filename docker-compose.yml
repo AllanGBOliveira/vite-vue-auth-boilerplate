@@ -1,0 +1,20 @@
+services:
+  app:
+    image: node:lts
+    container_name: treta
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    command:
+      [
+        "sh",
+        "-c",
+        #  "npm cache clean --force && npm cache verify && npm install --loglevel verbose && npm run build && npm run generate && npm run preview"
+        "npm cache clean --force && npm cache verify && npm install --loglevel verbose && npm run dev"
+      ]
+    environment:
+      - NODE_ENV='development'
+      - VITE_PORT=3000
+      - BASE_URL='/'
