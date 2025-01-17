@@ -1,28 +1,30 @@
-import axios from "axios";
-import router from "@/router";
-import { useUserStore } from "@/stores/user";
+import axios from 'axios';
+import router from '@/router';
+import { useUserStore } from '@/stores/user';
+const axiosInstance = axios.create({
+    baseURL: 'sua-api',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
 
-const { token } = useUserStore();
+axiosInstance.interceptors.request.use(config => {
+    const { token } = useUserStore();
 
-
-axios.defaults.baseURL = 'sua-api';
-
-axios.interceptors.request.use(config => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        if (error.response.status === 401) {
-            router.push({
-                name: 'login'
-            });
+        if (error.response && error.response.status === 401) {
+            router.push({ name: 'login' });
         }
         return Promise.reject(error);
     }
 );
 
+export default axiosInstance;

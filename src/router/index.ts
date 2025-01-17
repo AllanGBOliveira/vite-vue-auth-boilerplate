@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '@/components/LoginView.vue';
-import RegisterView from '@/components/RegisterView.vue';
+import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
 import { useUserStore } from '@/stores/user';
 
 const router = createRouter({
@@ -35,7 +35,8 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from) => {
-  const { token } = useUserStore();
+  const { token, setToken } = useUserStore();
+  setToken();
 
   if (!token && to.name !== 'login' && to.name !== 'register') {
     return { name: 'login' }
