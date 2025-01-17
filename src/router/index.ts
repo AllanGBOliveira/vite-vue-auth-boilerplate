@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/components/LoginView.vue';
 import RegisterView from '@/components/RegisterView.vue';
+import { useUserStore } from '@/stores/user';
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -34,9 +35,9 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from) => {
-  const isAuthenticated = false;
-  if (!isAuthenticated && to.name !== 'login' && to.name !== 'register') {
-    // redirect the user to the login page
+  const { token } = useUserStore();
+
+  if (!token && to.name !== 'login' && to.name !== 'register') {
     return { name: 'login' }
   }
 })
