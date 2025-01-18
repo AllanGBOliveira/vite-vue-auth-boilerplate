@@ -41,7 +41,8 @@ router.beforeEach(async (to) => {
   const { setToken } = userStore
   setToken();
 
-  if (!token && to.name !== 'login' && to.name !== 'register') {
+
+  if (!token.value && to.name !== 'login' && to.name !== 'register') {
     return { name: 'login' }
   }
 })
