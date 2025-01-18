@@ -1,8 +1,9 @@
 import axios from 'axios';
 import router from '@/router';
 import { useUserStore } from '@/stores/user';
+
 const axiosInstance = axios.create({
-    baseURL: 'sua-api',
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Content-Type': 'application/json'
     }

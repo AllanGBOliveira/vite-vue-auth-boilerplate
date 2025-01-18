@@ -1,7 +1,7 @@
 services:
   app:
     image: node:lts
-    container_name: treta
+    container_name: app
     working_dir: /app
     volumes:
       - ./:/app
@@ -17,4 +17,6 @@ services:
     environment:
       - NODE_ENV='development'
       - VITE_PORT=3000
-      - BASE_URL='/'
+      - VITE_BASE_URL='/'
+      - VITE_API_URL=https://jsonplaceholder.typicode.com
+      - VITE_TOKEN_LABEL='seu-token'

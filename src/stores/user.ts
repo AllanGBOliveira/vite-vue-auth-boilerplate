@@ -16,17 +16,18 @@ export const useUserStore = defineStore('user', () => {
     function setUser(userData: User) {
         user.value = userData;
 
-        localStorage.setItem('seu-token', `${token.value}`)
+        localStorage.setItem(import.meta.env.VITE_TOKEN_LABEL, `${token.value}`)
     }
 
     function setToken() {
-        const token = localStorage.getItem('seu-token') || '';
+        const token = localStorage.getItem(import.meta.env.VITE_TOKEN_LABEL) || '';
+
         user.value = { token, name: user.value?.name ?? '', email: user.value?.email ?? '' };
     }
 
     async function login(email: string, password: string) {
         try {
-            const data = await api.post('https://jsonplaceholder.typicode.com/posts', {
+            const data = await api.post('/posts', {
                 email,
                 password,
                 token: 'este-token-nao-deve-ser-enviado-esta-aqui-apenas-para-o-retorno-do-json-placeholder'
@@ -39,5 +40,5 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    return { user, token, login , setToken}
+    return { user, token, login, setToken }
 })
