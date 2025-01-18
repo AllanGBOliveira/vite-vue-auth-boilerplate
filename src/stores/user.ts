@@ -11,7 +11,7 @@ interface User {
 export const useUserStore = defineStore('user', () => {
     const user = ref<User>()
 
-    const token = computed(() => (user.value?.token) ?? false);
+    const token = computed(() => user.value?.token ?? false);
 
     function setUser(userData: User) {
         user.value = userData;
@@ -19,10 +19,13 @@ export const useUserStore = defineStore('user', () => {
         localStorage.setItem(import.meta.env.VITE_TOKEN_LABEL, `${token.value}`)
     }
 
-    function setToken() {
-        const token = localStorage.getItem(import.meta.env.VITE_TOKEN_LABEL) || '';
-
-        user.value = { token, name: user.value?.name ?? '', email: user.value?.email ?? '' };
+    function setToken(): Promise<void> {
+        return new Promise((resolve) => {
+            const token = localStorage.getItem(import.meta.env.VITE_TOKEN_LABEL) || '';
+            user.value = { token, name: user.value?.name ?? '', email: user.value?.email ?? '' };
+            
+            resolve();
+        });
     }
 
     async function login(email: string, password: string) {

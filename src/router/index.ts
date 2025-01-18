@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import { useUserStore } from '@/stores/user';
+import { storeToRefs } from 'pinia';
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -34,8 +35,10 @@ const router = createRouter({
 });
 
 
-router.beforeEach(async (to, from) => {
-  const { token, setToken } = useUserStore();
+router.beforeEach(async (to) => {
+  const userStore = useUserStore();
+  const { token } = storeToRefs(userStore)
+  const { setToken } = userStore
   setToken();
 
   if (!token && to.name !== 'login' && to.name !== 'register') {
